@@ -4,6 +4,8 @@ extends CharacterBody3D
 
 @export var camera: Camera3D
 @export var cursor: Sprite2D
+@export var collider: CapsuleShape3D
+@export_range(0.0, 2.0) var look_sensitivity: float = 1.0
 
 const FOV_MOVE = 75.0
 const FOV_FOCUS = 60.0
@@ -19,7 +21,10 @@ func spawn(location: Vector3, pitch: float = 0.0, yaw: float = 0.0, scale: float
 	camera.rotation_degrees.x = pitch
 	camera.rotation_degrees.y = yaw
 	camera.rotation_degrees.z = 0.0
-
+	
+	camera.position.y = 0.8 * scale
+	collider.height = 2 * scale
+	collider.radius = 0.5 * scale
 	# TODO: Scale collider
 
 func _process_move(delta: float):
@@ -77,8 +82,8 @@ func _physics_process(delta: float) -> void:
 		
 func _input_move(event):
 	if event is InputEventMouseMotion:
-		camera.rotation_degrees.y -= event.screen_relative.x;
-		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - event.screen_relative.y, -89, 89)
+		camera.rotation_degrees.y -= event.screen_relative.x * look_sensitivity;
+		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - event.screen_relative.y * look_sensitivity, -89, 89)
 	
 func _input_focus(event):
 	if event is InputEventMouseMotion:

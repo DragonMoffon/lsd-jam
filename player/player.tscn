@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dpxl6sd1264p0"]
 
-[ext_resource type="Script" uid="uid://cfjjgmc8af3kj" path="res://player/player.gd" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://cfjjgmc8af3kj" path="res://player/player.gd" id="1_rkbax"]
 [ext_resource type="Texture2D" uid="uid://bol8h56dwuass" path="res://player/cursor.png" id="2_i3pqv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sweqy"]
@@ -8,9 +8,10 @@
 [node name="Player" type="CharacterBody3D" unique_id=221209981 node_paths=PackedStringArray("camera", "cursor")]
 collision_layer = 2
 collision_mask = 9
-script = ExtResource("1_onrkg")
+script = ExtResource("1_rkbax")
 camera = NodePath("ViewCamera")
 cursor = NodePath("Cursor")
+collider = SubResource("CapsuleShape3D_sweqy")
 
 [node name="CapsuleCollider" type="CollisionShape3D" parent="." unique_id=440037405]
 shape = SubResource("CapsuleShape3D_sweqy")

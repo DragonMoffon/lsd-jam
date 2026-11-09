@@ -1,3 +1,118 @@
 [gd_scene format=3 uid="uid://b60lxjexqt18o"]
 
+[ext_resource type="Script" uid="uid://bai8ptanpo2yh" path="res://dreams/dream.gd" id="1_xnxxy"]
+[ext_resource type="SphereMesh" uid="uid://bavspyhmw5yw5" path="res://assets/models/base_sphere.res" id="2_5dgdw"]
+[ext_resource type="PackedScene" uid="uid://oxa0jshvvlf5" path="res://dreams/dream_door.tscn" id="2_7vk2w"]
+[ext_resource type="Resource" uid="uid://qyaywypfrbku" path="res://dreams/dream2/dream1_link.tres" id="3_bx5kx"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_thnhf"]
+radius = 3.329
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7vk2w"]
+radius = 1.174
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5dgdw"]
+radius = 2.068
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_eq3u1"]
+radius = 3.152
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_smb6q"]
+radius = 4.152
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_obydu"]
+radius = 1.744
+
+[sub_resource type="BoxMesh" id="BoxMesh_thnhf"]
+size = Vector3(21.251526, 1, 24.810059)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_smb6q"]
+data = PackedVector3Array(-10.6258, 0.5, 12.405, 10.6258, 0.5, 12.405, -10.6258, -0.5, 12.405, 10.6258, 0.5, 12.405, 10.6258, -0.5, 12.405, -10.6258, -0.5, 12.405, 10.6258, 0.5, -12.405, -10.6258, 0.5, -12.405, 10.6258, -0.5, -12.405, -10.6258, 0.5, -12.405, -10.6258, -0.5, -12.405, 10.6258, -0.5, -12.405, 10.6258, 0.5, 12.405, 10.6258, 0.5, -12.405, 10.6258, -0.5, 12.405, 10.6258, 0.5, -12.405, 10.6258, -0.5, -12.405, 10.6258, -0.5, 12.405, -10.6258, 0.5, -12.405, -10.6258, 0.5, 12.405, -10.6258, -0.5, -12.405, -10.6258, 0.5, 12.405, -10.6258, -0.5, 12.405, -10.6258, -0.5, -12.405, 10.6258, 0.5, 12.405, -10.6258, 0.5, 12.405, 10.6258, 0.5, -12.405, -10.6258, 0.5, 12.405, -10.6258, 0.5, -12.405, 10.6258, 0.5, -12.405, -10.6258, -0.5, 12.405, 10.6258, -0.5, 12.405, -10.6258, -0.5, -12.405, 10.6258, -0.5, 12.405, 10.6258, -0.5, -12.405, -10.6258, -0.5, -12.405)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_smb6q"]
+
+[sub_resource type="Sky" id="Sky_ootpb"]
+sky_material = SubResource("ProceduralSkyMaterial_smb6q")
+
+[sub_resource type="Environment" id="Environment_obydu"]
+background_mode = 2
+sky = SubResource("Sky_ootpb")
+ssao_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8guie"]
+
 [node name="Dream2" type="Node3D" unique_id=1621190644]
+script = ExtResource("1_xnxxy")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1832422129]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6767216, 0, -2.4952087)
+collision_layer = 8
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=1759020498]
+transform = Transform3D(6.656656, 0, 0, 0, 6.656656, 0, 0, 0, 6.656656, -0.119742155, 6.204472, 1.226552)
+mesh = ExtResource("2_5dgdw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1418630634]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.119742155, 6.204472, 1.226552)
+shape = SubResource("SphereShape3D_thnhf")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Ground" unique_id=1002320413]
+transform = Transform3D(2.346567, 0, 0, 0, 2.346567, 0, 0, 0, 2.346567, -4.952925, 11.989491, 2.4971328)
+mesh = ExtResource("2_5dgdw")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Ground" unique_id=1234562919]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, -4.952925, 11.989491, 2.4971328)
+shape = SubResource("SphereShape3D_7vk2w")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Ground" unique_id=588567710]
+transform = Transform3D(4.135307, 0, 0, 0, 4.135307, 0, 0, 0, 4.135307, -0.5233307, 8.857912, 4.725123)
+mesh = ExtResource("2_5dgdw")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Ground" unique_id=174797202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5233307, 8.857912, 4.725123)
+shape = SubResource("SphereShape3D_5dgdw")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Ground" unique_id=450004754]
+transform = Transform3D(6.302739, 0, 0, 0, 6.302739, 0, 0, 0, 6.302739, -5.772371, 2.2675586, 0.8496871)
+mesh = ExtResource("2_5dgdw")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Ground" unique_id=187481209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.772371, 2.2675586, 0.8496871)
+shape = SubResource("SphereShape3D_eq3u1")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Ground" unique_id=293332715]
+transform = Transform3D(8.30339, 0, 0, 0, 8.30339, 0, 0, 0, 8.30339, -10.354822, 11.503079, 1.2265368)
+mesh = ExtResource("2_5dgdw")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Ground" unique_id=2103472837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.354822, 11.503079, 1.2265368)
+shape = SubResource("SphereShape3D_smb6q")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Ground" unique_id=396133423]
+transform = Transform3D(3.4880555, 0, 0, 0, 3.4880555, 0, 0, 0, 3.4880555, -2.314584, 11.238262, 4.803616)
+mesh = ExtResource("2_5dgdw")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Ground" unique_id=1706624371]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.314584, 11.238262, 4.803616)
+shape = SubResource("SphereShape3D_obydu")
+
+[node name="DreamDoor" parent="." unique_id=1404253152 instance=ExtResource("2_7vk2w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.1467857, 0)
+collision_layer = 12
+link = ExtResource("3_bx5kx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DreamDoor" unique_id=319591590]
+mesh = SubResource("BoxMesh_thnhf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=2054187695]
+shape = SubResource("ConcavePolygonShape3D_smb6q")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=619386067]
+environment = SubResource("Environment_obydu")
+camera_attributes = SubResource("CameraAttributesPractical_8guie")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1052675015]
+transform = Transform3D(0.8067637, 0.30519062, 0.5059558, -0.5683974, 0.16691874, 0.80564415, 0.16142155, -0.9375484, 0.30813348, 0, 0, 0)
+shadow_enabled = true
+
+[connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DreamLink" format=3 uid="uid://qyaywypfrbku"]
+
+[ext_resource type="Script" uid="uid://7h6kyhy3kqgu" path="res://dream_link.gd" id="1_mqmk1"]
+
+[resource]
+script = ExtResource("1_mqmk1")
+dream = "uid://cy1dolb3jollp"
+location = Vector3(0, 1, 0)
+pitch = 28.0
+yaw = -130.0
+metadata/_custom_type_script = "uid://7h6kyhy3kqgu"

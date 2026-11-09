@@ -26,8 +26,8 @@ radius = 1.744
 [sub_resource type="BoxMesh" id="BoxMesh_thnhf"]
 size = Vector3(21.251526, 1, 24.810059)
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_smb6q"]
-data = PackedVector3Array(-10.6258, 0.5, 12.405, 10.6258, 0.5, 12.405, -10.6258, -0.5, 12.405, 10.6258, 0.5, 12.405, 10.6258, -0.5, 12.405, -10.6258, -0.5, 12.405, 10.6258, 0.5, -12.405, -10.6258, 0.5, -12.405, 10.6258, -0.5, -12.405, -10.6258, 0.5, -12.405, -10.6258, -0.5, -12.405, 10.6258, -0.5, -12.405, 10.6258, 0.5, 12.405, 10.6258, 0.5, -12.405, 10.6258, -0.5, 12.405, 10.6258, 0.5, -12.405, 10.6258, -0.5, -12.405, 10.6258, -0.5, 12.405, -10.6258, 0.5, -12.405, -10.6258, 0.5, 12.405, -10.6258, -0.5, -12.405, -10.6258, 0.5, 12.405, -10.6258, -0.5, 12.405, -10.6258, -0.5, -12.405, 10.6258, 0.5, 12.405, -10.6258, 0.5, 12.405, 10.6258, 0.5, -12.405, -10.6258, 0.5, 12.405, -10.6258, 0.5, -12.405, 10.6258, 0.5, -12.405, -10.6258, -0.5, 12.405, 10.6258, -0.5, 12.405, -10.6258, -0.5, -12.405, 10.6258, -0.5, 12.405, 10.6258, -0.5, -12.405, -10.6258, -0.5, -12.405)
+[sub_resource type="BoxShape3D" id="BoxShape3D_7vk2w"]
+size = Vector3(21.251526, 1, 24.810059)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_smb6q"]
 
@@ -105,7 +105,7 @@ link = ExtResource("3_bx5kx")
 mesh = SubResource("BoxMesh_thnhf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=2054187695]
-shape = SubResource("ConcavePolygonShape3D_smb6q")
+shape = SubResource("BoxShape3D_7vk2w")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=619386067]
 environment = SubResource("Environment_obydu")

@@ -23,6 +23,8 @@ radius = 4.152
 [sub_resource type="SphereShape3D" id="SphereShape3D_obydu"]
 radius = 1.744
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_thnhf"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_thnhf"]
 size = Vector3(21.251526, 1, 24.810059)
 
@@ -42,6 +44,7 @@ ssao_enabled = true
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8guie"]
 
 [node name="Dream2" type="Node3D" unique_id=1621190644]
+process_mode = 1
 script = ExtResource("1_xnxxy")
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=1832422129]
@@ -95,6 +98,10 @@ mesh = ExtResource("2_5dgdw")
 [node name="CollisionShape3D6" type="CollisionShape3D" parent="Ground" unique_id=1706624371]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.314584, 11.238262, 4.803616)
 shape = SubResource("SphereShape3D_obydu")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Ground" unique_id=1848135915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.440063, 10.343553, 0.7844932)
+mesh = SubResource("CapsuleMesh_thnhf")
 
 [node name="DreamDoor" parent="." unique_id=1404253152 instance=ExtResource("2_7vk2w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.1467857, 0)

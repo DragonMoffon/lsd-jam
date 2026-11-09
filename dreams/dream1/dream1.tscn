@@ -45,6 +45,7 @@ ssao_enabled = true
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_m14s3"]
 
 [node name="Dream1" type="Node3D" unique_id=1820168175]
+process_mode = 1
 script = ExtResource("1_swgwi")
 
 [node name="DreamDoor" parent="." unique_id=1404253152 instance=ExtResource("2_c0b36")]

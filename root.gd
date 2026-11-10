@@ -5,6 +5,7 @@ extends Node3D
 @export var fader: ColorRect
 @export_range(0.0, 10.0) var fade_time: float = 0.5
 var current_dream: Dream
+var navigating: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,6 +19,9 @@ func _on_navigate_dream(link: DreamLink) -> void:
 		navigate_to_dream(link)
 	
 func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
+	if navigating: # If we are already navigating ignore any requests to navigate again
+		return 
+	navigating = true
 	Engine.set_time_scale(1.0)
 	get_tree().paused = true
 	ResourceLoader.load_threaded_request(link.dream)
@@ -37,10 +41,15 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	# TODO: Make loading dreams better because loading them from disc everytime seems awful???
 	if current_dream != null:
 		current_dream.queue_free()
-
+	
 	# Place Player
 	player.spawn(link.location, link.pitch, link.yaw, link.scale)
+	# Unpause the phyiscs engine to actually move the player before we spawn the new scene in
+	set_physics_process(true)
 	
+	# wait frame to ensure the node has been unloaded before loading next dream
+	await get_tree().process_frame
+
 	# Get async loaded level and add to node tree
 	var packed_dream: PackedScene = ResourceLoader.load_threaded_get(link.dream)
 	current_dream = packed_dream.instantiate()
@@ -48,10 +57,14 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	add_child(current_dream)
 	current_dream.navigate_dream.connect(_on_navigate_dream)
 	
-	get_tree().paused = false
+	# wait frame to ensure the node has been added to node tree
+	await get_tree().process_frame
+	get_tree().paused = false 
 	
 	# Fade Out
 	tween.play()
 	await tween.finished
 	fader.visible = false
 	tween.kill()
+	
+	navigating = false

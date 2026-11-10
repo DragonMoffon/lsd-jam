@@ -52,13 +52,18 @@ func _process_focus(delta: float):
 	camera.fov = move_toward(camera.fov, FOV_FOCUS, 1)
 	Engine.set_time_scale(move_toward(Engine.get_time_scale(), FOCUS_TIMESCALE, 0.1))
 	
-	var mouse: Vector2 = cursor.position
 	var resolution = get_viewport().size / 2.0
-	if resolution.x * 0.9 < abs(mouse.x):
-		camera.rotation_degrees.y -= 15*sign(mouse.x) * delta / Engine.get_time_scale()
-	if resolution.y * 0.9 < abs(mouse.y):
-		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - 15*sign(mouse.y) * delta / Engine.get_time_scale(), -89, 89)
-		
+	
+	var mouse: Vector2 = cursor.position
+	var direction = -camera.project_ray_normal(mouse + resolution)
+	var forward = camera.get_global_transform_interpolated().basis.z
+	var shifted = forward.move_toward(direction, delta / Engine.get_time_scale())
+	var offsets = Vector2(rad_to_deg(asin(-direction.y)), rad_to_deg(atan2(direction.x, direction.z)))
+	print(shifted)
+	print(rad_to_deg(asin(-direction.y)), " ", camera.rotation_degrees.x)
+	print(rad_to_deg(atan2(direction.x, direction.z)), " ", camera.rotation_degrees.y)
+	# print(camera.get_global_transform_interpolated().basis.z, direction)
+
 	if Input.is_action_just_pressed("interact"):
 		var space_state = get_world_3d().direct_space_state
 		var origin = camera.project_ray_origin(mouse + resolution)
@@ -82,7 +87,11 @@ func _physics_process(delta: float) -> void:
 		
 func _input_move(event):
 	if event is InputEventMouseMotion:
-		camera.rotation_degrees.y -= event.screen_relative.x * look_sensitivity;
+		camera.rotation_degrees.y = fmod(camera.rotation_degrees.y - event.screen_relative.x * look_sensitivity, 360);
+		if camera.rotation_degrees.y < -180:
+			camera.rotation_degrees.y += 360
+		elif camera.rotation_degrees.y > 180:
+			camera.rotation_degrees.y -= 360
 		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - event.screen_relative.y * look_sensitivity, -89, 89)
 	
 func _input_focus(event):

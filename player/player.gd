@@ -41,11 +41,8 @@ func _process_move(delta: float):
 	cursor.position = Util.smerp2d(cursor.position, Vector2(0.0, 0.0), delta,  1.0)
 	camera.fov = move_toward(camera.fov, FOV_MOVE, 1)
 	Engine.set_time_scale(move_toward(Engine.get_time_scale(), BASE_TIMESCALE, 0.1))
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("left", "right", "forward", "backwards")
 	var is_sprinting := (Input.is_action_pressed("sprint") or is_foward_sprinting) and Input.is_action_pressed("forward")
-	print(is_sprinting)
 	var speed := SPRINT_SPEED if is_sprinting else SPEED
 	var direction := (camera.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
@@ -56,10 +53,6 @@ func _process_move(delta: float):
 		velocity.z = move_toward(velocity.z, 0, speed)
 	
 	move_and_slide()
-	for i in get_slide_collision_count():
-		var other = get_slide_collision(i).get_collider()
-		if other is DreamDoor:
-			other.interact()
 	
 func _process_focus(delta: float):
 	Engine.set_time_scale(move_toward(Engine.get_time_scale(), FOCUS_TIMESCALE, 0.1))
@@ -94,6 +87,8 @@ func _process_focus(delta: float):
 		var origin = camera.project_ray_origin(mouse + resolution)
 		var target = origin + camera.project_ray_normal(mouse + resolution) * 100
 		var query = PhysicsRayQueryParameters3D.create(origin, target, 0b100)
+		query.collide_with_areas = true
+		query.collide_with_bodies = true
 		var result = space_state.intersect_ray(query)
 
 		if "collider" in result and result["collider"] is DreamDoor:

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="DreamLink" format=3 uid="uid://cgdggkecpc6ab"]
 
-[ext_resource type="Script" uid="uid://7h6kyhy3kqgu" path="res://dream_link.gd" id="1_3f7un"]
+[ext_resource type="Script" uid="uid://7h6kyhy3kqgu" path="res://dreams/dream_link.gd" id="1_3f7un"]
 
 [resource]
 script = ExtResource("1_3f7un")

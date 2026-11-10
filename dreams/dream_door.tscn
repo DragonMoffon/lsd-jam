@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://joq2bv7eulaa" path="res://dreams/dream_door.gd" id="1_6aerc"]
 
-[node name="DreamDoor" type="StaticBody3D" unique_id=1404253152]
+[node name="DreamDoor" type="Area3D" unique_id=2000692532]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 2
 script = ExtResource("1_6aerc")
+
+[connection signal="body_entered" from="." to="." method="touch"]

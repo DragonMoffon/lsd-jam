@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DreamLink" format=3 uid="uid://b4kvv1u30h3x4"]
+
+[ext_resource type="Script" uid="uid://7h6kyhy3kqgu" path="res://dreams/dream_link.gd" id="1_k5fj5"]
+
+[resource]
+script = ExtResource("1_k5fj5")
+name = "Enter Low Dream"
+fade_color = Color(0.5595232, 1.2754649e-06, 3.3691526e-07, 1)
+dream = "uid://b6tlmb60hur7e"
+metadata/_custom_type_script = "uid://7h6kyhy3kqgu"

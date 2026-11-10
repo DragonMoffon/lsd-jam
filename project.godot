@@ -12,7 +12,13 @@ config_version=5
 
 config/name="LSD Jam"
 run/main_scene="uid://bao3xr4rujd7a"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="DigitalDragons/LSD"
 config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[autoload]
+
+DataManager="*uid://8k70ut3xttv4"
 
 [display]
 

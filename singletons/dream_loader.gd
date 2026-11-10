@@ -1,6 +1,5 @@
 extends Node3D
 
-@export var initial_link: DreamLink
 @export var player: Player
 @export var fader: ColorRect
 @export_range(0.0, 10.0) var fade_time: float = 0.5
@@ -11,8 +10,15 @@ var navigating: bool = false
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
-	if initial_link != null:
-		navigate_to_dream(initial_link, true)
+	# TODO: This cannot be the best way to do this
+	DataManager.save_loaded.connect(_on_save_loaded)
+	if DataManager.save != null: # A save was autoloaded so load it
+		_on_save_loaded()
+		
+
+func _on_save_loaded():
+	print("save loaded!")
+	navigate_to_dream(DataManager.save.last_link, true)
 
 func _on_navigate_dream(link: DreamLink) -> void:
 	if link != null:

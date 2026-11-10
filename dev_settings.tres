@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Settings" format=3 uid="uid://bn62y7iob4su"]
+
+[ext_resource type="Script" uid="uid://ntva0x2e2voo" path="res://settings.gd" id="1_xc8o3"]
+
+[resource]
+script = ExtResource("1_xc8o3")
+active_save_path = "res://dev_save.tres"
+load_automatically = true
+metadata/_custom_type_script = "uid://ntva0x2e2voo"

@@ -13,10 +13,12 @@ height = 12.0
 [sub_resource type="GDScript" id="GDScript_33o1v"]
 script/source = "extends MeshInstance3D
 
-const BASE_HEIGHT = 3
+const BASE_HEIGHT = 9
+var elapsed = 0.0
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	position.y = BASE_HEIGHT + 3*sin(Time.get_ticks_msec() / 1000.0)
+	elapsed += delta
+	position.y = BASE_HEIGHT + 3*sin(elapsed)
 "
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_25bfy"]
@@ -53,16 +55,16 @@ size = Vector3(100, 100, 100)
 process_mode = 1
 script = ExtResource("1_swgwi")
 
-[node name="DreamDoor" parent="." unique_id=1404253152 instance=ExtResource("2_c0b36")]
+[node name="TestSphere" type="MeshInstance3D" parent="." unique_id=395421524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 9, 13)
-collision_layer = 12
-link = ExtResource("3_25bfy")
-
-[node name="TestSphere" type="MeshInstance3D" parent="DreamDoor" unique_id=395421524]
 mesh = SubResource("SphereMesh_6sf1m")
 script = SubResource("GDScript_33o1v")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=556838768]
+[node name="DreamDoor" parent="TestSphere" unique_id=1404253152 instance=ExtResource("2_c0b36")]
+collision_layer = 12
+link = ExtResource("3_25bfy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TestSphere/DreamDoor" unique_id=556838768]
 shape = SubResource("ConcavePolygonShape3D_25bfy")
 
 [node name="GroundCollider" type="StaticBody3D" parent="." unique_id=821250156]
@@ -97,5 +99,5 @@ link = ExtResource("5_dtd8k")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DreamCage" unique_id=244471391]
 shape = SubResource("BoxShape3D_huuin")
 
-[connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]
+[connection signal="navigate_dream" from="TestSphere/DreamDoor" to="." method="_on_navigate_dream"]
 [connection signal="navigate_dream" from="DreamCage" to="." method="_on_navigate_dream"]

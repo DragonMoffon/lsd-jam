@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://8k70ut3xttv4"]
+
+[ext_resource type="Script" uid="uid://chruxtmkprjpv" path="res://singletons/autoload/data_manager.gd" id="1_qtim8"]
+[ext_resource type="Resource" uid="uid://bn62y7iob4su" path="res://dev_settings.tres" id="2_gxl74"]
+[ext_resource type="Resource" uid="uid://dyjnukwvcsh6m" path="res://dev_save.tres" id="3_cnuqi"]
+
+[node name="DataManager" type="Node" unique_id=692324605]
+script = ExtResource("1_qtim8")
+settings_override = ExtResource("2_gxl74")
+save_override = ExtResource("3_cnuqi")

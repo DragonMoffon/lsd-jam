@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://duncpsbmdlla6"]
+
+[ext_resource type="Script" uid="uid://c4avuwul8c8cc" path="res://singletons/dream_loader.gd" id="1_0me42"]
+[ext_resource type="PackedScene" uid="uid://dpxl6sd1264p0" path="res://player/player.tscn" id="2_mkjn1"]
+
+[node name="DreamLoader" type="Node3D" unique_id=1098553390 node_paths=PackedStringArray("player", "fader")]
+script = ExtResource("1_0me42")
+player = NodePath("Player")
+fader = NodePath("Screen Fade")
+
+[node name="Player" parent="." unique_id=221209981 instance=ExtResource("2_mkjn1")]
+process_mode = 1
+look_sensitivity = 0.8
+
+[node name="Screen Fade" type="ColorRect" parent="." unique_id=2093810392]
+process_mode = 3
+anchors_preset = -1
+anchor_left = -0.5
+anchor_top = -0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 0.16000366
+offset_bottom = -3.0517578e-05
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)

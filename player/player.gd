@@ -17,7 +17,7 @@ var is_foward_sprinting := false
 const SPRINT_BUFFER := 320 # ms
 var focus_look_time := 0.0 # When should the player camera start moving to look
 var focus_target := Vector2(0.0, 0.0) # What location should the player focus on
-const LOOK_DELAY := 500 # ms
+const LOOK_DELAY := 100 # ms
 const LOOK_SPEED := 0.5
 
 const FOCUS_TIMESCALE := 0.05 # TODO: Audio timescale (slowing?)

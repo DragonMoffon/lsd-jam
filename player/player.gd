@@ -15,7 +15,8 @@ const SPRINT_SPEED := 15.0
 var sprint_time := 0.0
 var is_foward_sprinting := false
 const SPRINT_BUFFER := 320 # ms
-var focus_look_time := 0.0
+var focus_look_time := 0.0 # When should the player camera start moving to look
+var focus_target := Vector2(0.0, 0.0) # What location should the player focus on
 const LOOK_DELAY := 500 # ms
 const LOOK_SPEED := 0.5
 
@@ -54,45 +55,54 @@ func _process_move(delta: float):
 	
 	move_and_slide()
 	
+func _focus_look_towards(true_delta: float):	
+	var resolution = get_viewport().size / 2.0
+	var target: Vector2 = focus_target
+	# Find rotation needed to move cursor to center of screen
+	var direction = -camera.project_ray_normal(target + resolution)
+	var target_location = camera.project_position(target + resolution, camera.near)
+	var cursor_location = camera.project_position(cursor.position + resolution, camera.near)
+	
+	var target_yaw = atan2(direction.x, direction.z)
+	var target_pitch = asin(-direction.y)
+	# Do checks to handle scenario where the cursor angle is "past" 360 degrees + or -
+	if target_yaw + PI < camera.rotation.y:
+		target_yaw += TAU
+	elif camera.rotation.y < target_yaw - PI:
+		target_yaw -= TAU
+	
+	camera.rotation = Util.smerp3d(Vector3(target_pitch, target_yaw, 0.0), camera.rotation, true_delta, 1.0 / (4 * look_sensitivity * LOOK_SPEED))
+	camera.rotation.move_toward(Vector3(target_pitch, target_yaw, 0.0), look_sensitivity * LOOK_SPEED * true_delta)
+	focus_target =  camera.unproject_position(target_location) - resolution
+	cursor.position = camera.unproject_position(cursor_location) - resolution
+	
+func _focus_ray_cast():
+	var resolution = get_viewport().size / 2.0
+	var mouse: Vector2 = cursor.position
+	var space_state = get_world_3d().direct_space_state
+	var origin = camera.project_ray_origin(mouse + resolution)
+	var target = origin + camera.project_ray_normal(mouse + resolution) * 100
+	var query = PhysicsRayQueryParameters3D.create(origin, target, 0b100)
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+	var result = space_state.intersect_ray(query)
+
+	if "collider" in result and result["collider"] is DreamDoor:
+		result["collider"].interact()
+
 func _process_focus(delta: float):
 	Engine.set_time_scale(move_toward(Engine.get_time_scale(), FOCUS_TIMESCALE, 0.1))
 	velocity.x = 0
 	velocity.z = 0
 	var true_delta = delta / Engine.get_time_scale()
 	camera.fov = move_toward(camera.fov, FOV_FOCUS, 60.0*true_delta)
-	
-	var resolution = get_viewport().size / 2.0
-	
+
 	if focus_look_time < Time.get_ticks_msec():
-		var mouse: Vector2 = cursor.position
-		# Find rotation needed to move cursor to center of screen
-		var direction = -camera.project_ray_normal(mouse + resolution)
-		var mouse_location = camera.project_position(mouse + resolution, camera.near)
-		
-		var target_yaw = atan2(direction.x, direction.z)
-		var target_pitch = asin(-direction.y)
-		# Do checks to handle scenario where the cursor angle is "past" 360 degrees + or -
-		if target_yaw + PI < camera.rotation.y:
-			target_yaw += TAU
-		elif camera.rotation.y < target_yaw - PI:
-			target_yaw -= TAU
-		
-		camera.rotation = Util.smerp3d(Vector3(target_pitch, target_yaw, 0.0), camera.rotation, true_delta, 1.0 / (4 * look_sensitivity * LOOK_SPEED))
-		camera.rotation.move_toward(Vector3(target_pitch, target_yaw, 0.0), look_sensitivity * LOOK_SPEED * true_delta)
-		cursor.position  = camera.unproject_position(mouse_location) - resolution
+		focus_target = cursor.position
+	_focus_look_towards(true_delta)
 
 	if Input.is_action_just_pressed("interact"):
-		var mouse: Vector2 = cursor.position
-		var space_state = get_world_3d().direct_space_state
-		var origin = camera.project_ray_origin(mouse + resolution)
-		var target = origin + camera.project_ray_normal(mouse + resolution) * 100
-		var query = PhysicsRayQueryParameters3D.create(origin, target, 0b100)
-		query.collide_with_areas = true
-		query.collide_with_bodies = true
-		var result = space_state.intersect_ray(query)
-
-		if "collider" in result and result["collider"] is DreamDoor:
-			result["collider"].interact()
+		_focus_ray_cast()
 
 	move_and_slide()
 

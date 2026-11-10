@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="SaveData" format=3 uid="uid://dyjnukwvcsh6m"]
 
 [ext_resource type="Script" uid="uid://cob08inuturlp" path="res://dream_fragment.gd" id="1_lf6br"]
-[ext_resource type="Resource" uid="uid://b4kvv1u30h3x4" path="res://dreams/dream_low/dream_low_link.tres" id="2_lf6br"]
+[ext_resource type="Resource" uid="uid://qyaywypfrbku" path="res://dreams/dream2/dream1_link.tres" id="2_700cj"]
 [ext_resource type="Script" uid="uid://b6hpjqgxqwb0w" path="res://save_data.gd" id="3_mxujx"]
 
 [resource]
 script = ExtResource("3_mxujx")
-last_link = ExtResource("2_lf6br")
+last_link = ExtResource("2_700cj")
 metadata/_custom_type_script = "uid://b6hpjqgxqwb0w"

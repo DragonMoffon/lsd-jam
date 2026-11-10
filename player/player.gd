@@ -11,7 +11,9 @@ const FOV_MOVE = 75.0
 const FOV_FOCUS = 60.0
 
 const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+var focus_look_time = 0.0
+const LOOK_DELAY = 0.5
+const LOOK_SPEED = 0.5
 
 const FOCUS_TIMESCALE = 0.05 # TODO: Audio timescale (slowing?)
 const BASE_TIMESCALE = 1.0
@@ -28,7 +30,7 @@ func spawn(location: Vector3, pitch: float = 0.0, yaw: float = 0.0, scale: float
 	# TODO: Scale collider
 
 func _process_move(delta: float):
-	cursor.position = cursor.position.move_toward(Vector2(0.0, 0.0), 2*SPEED)
+	cursor.position = Util.smerp2d(cursor.position, Vector2(0.0, 0.0), delta,  1.0)
 	camera.fov = move_toward(camera.fov, FOV_MOVE, 1)
 	Engine.set_time_scale(move_toward(Engine.get_time_scale(), BASE_TIMESCALE, 0.1))
 	# Get the input direction and handle the movement/deceleration.
@@ -49,22 +51,32 @@ func _process_move(delta: float):
 			other.interact()
 	
 func _process_focus(delta: float):
-	camera.fov = move_toward(camera.fov, FOV_FOCUS, 1)
 	Engine.set_time_scale(move_toward(Engine.get_time_scale(), FOCUS_TIMESCALE, 0.1))
+	var true_delta = delta / Engine.get_time_scale()
+	camera.fov = move_toward(camera.fov, FOV_FOCUS, 60.0*true_delta)
 	
 	var resolution = get_viewport().size / 2.0
 	
-	var mouse: Vector2 = cursor.position
-	var direction = -camera.project_ray_normal(mouse + resolution)
-	var forward = camera.get_global_transform_interpolated().basis.z
-	var shifted = forward.move_toward(direction, delta / Engine.get_time_scale())
-	var offsets = Vector2(rad_to_deg(asin(-direction.y)), rad_to_deg(atan2(direction.x, direction.z)))
-	print(shifted)
-	print(rad_to_deg(asin(-direction.y)), " ", camera.rotation_degrees.x)
-	print(rad_to_deg(atan2(direction.x, direction.z)), " ", camera.rotation_degrees.y)
-	# print(camera.get_global_transform_interpolated().basis.z, direction)
+	if focus_look_time < Time.get_ticks_msec() / 1000.0:
+		var mouse: Vector2 = cursor.position
+		# Find rotation needed to move cursor to center of screen
+		var direction = -camera.project_ray_normal(mouse + resolution)
+		var mouse_location = camera.project_position(mouse + resolution, camera.near)
+		
+		var target_yaw = atan2(direction.x, direction.z)
+		var target_pitch = asin(-direction.y)
+		# Do checks to handle scenario where the cursor angle is "past" 360 degrees + or -
+		if target_yaw + PI < camera.rotation.y:
+			target_yaw += TAU
+		elif camera.rotation.y < target_yaw - PI:
+			target_yaw -= TAU
+		
+		camera.rotation = Util.smerp3d(Vector3(target_pitch, target_yaw, 0.0), camera.rotation, true_delta, 1.0 / (4 * look_sensitivity * LOOK_SPEED))
+		camera.rotation.move_toward(Vector3(target_pitch, target_yaw, 0.0), look_sensitivity * LOOK_SPEED * true_delta)
+		cursor.position  = camera.unproject_position(mouse_location) - resolution
 
 	if Input.is_action_just_pressed("interact"):
+		var mouse: Vector2 = cursor.position
 		var space_state = get_world_3d().direct_space_state
 		var origin = camera.project_ray_origin(mouse + resolution)
 		var target = origin + camera.project_ray_normal(mouse + resolution) * 100
@@ -87,16 +99,17 @@ func _physics_process(delta: float) -> void:
 		
 func _input_move(event):
 	if event is InputEventMouseMotion:
-		camera.rotation_degrees.y = fmod(camera.rotation_degrees.y - event.screen_relative.x * look_sensitivity, 360);
+		camera.rotation_degrees.y = fmod(camera.rotation_degrees.y - event.screen_relative.x * LOOK_SPEED * look_sensitivity, 360);
 		if camera.rotation_degrees.y < -180:
 			camera.rotation_degrees.y += 360
 		elif camera.rotation_degrees.y > 180:
 			camera.rotation_degrees.y -= 360
-		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - event.screen_relative.y * look_sensitivity, -89, 89)
+		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - event.screen_relative.y * LOOK_SPEED * look_sensitivity, -89, 89)
 	
 func _input_focus(event):
 	if event is InputEventMouseMotion:
 		cursor.position += event.relative
+		focus_look_time = Time.get_ticks_msec() / 1000.0 + LOOK_DELAY
 
 func _input(event):
 	if Input.is_action_pressed("focus"):

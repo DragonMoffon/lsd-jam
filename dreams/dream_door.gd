@@ -7,7 +7,7 @@ extends Area3D
 @export var is_interactable: bool = true
 
 @export_category("Weight Adjustment")
-@export_enum("Add", "Mulitply", "Set") var change_mode = 0
+@export_enum("Add", "Mulitply", "Set") var change_method: int = 0
 @export var integrity_change: float = 0.0
 @export var lucidity_change: float = 0.0
 
@@ -25,6 +25,6 @@ func navigate(apply_weights: bool = true):
 	if is_queued_for_deletion():
 		return
 	if apply_weights:
-		DataManager.save.update_weights(link.change_mode, link.integrity_change, link.lucidity_change)
-		DataManager.save.update_weights(change_mode, integrity_change, lucidity_change)
+		DataManager.save.update_weights(link.change_method, link.integrity_change, link.lucidity_change)
+		DataManager.save.update_weights(change_method, integrity_change, lucidity_change)
 	navigate_dream.emit(link)

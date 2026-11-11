@@ -8,3 +8,8 @@ extends Resource
 @export_range(-89, 89) var pitch: float = 0.0
 @export_range(-180, 180) var yaw: float = 0.0
 @export_range(0, 2) var scale: float = 1.0
+
+@export_category("Weight Adjustment")
+@export_enum("Add", "Mulitply", "Set") var change_mode = 0
+@export var integrity_change: float = 0.0
+@export var lucidity_change: float = 0.0

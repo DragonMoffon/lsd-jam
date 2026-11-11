@@ -7,6 +7,7 @@ signal integrity_changed(old: float, new: float); @export_custom(PROPERTY_HINT_O
 		var old = integrity
 		integrity = value
 		integrity_changed.emit(old, value)
+		emit_changed()
 	get:
 		return integrity
 
@@ -15,11 +16,26 @@ signal lucidity_changed(old: float, new: float); @export_custom(PROPERTY_HINT_ON
 		var old = lucidity
 		lucidity = value
 		lucidity_changed.emit(old, value)
+		emit_changed()
 	get:
-		return integrity
+		return lucidity
 		
 @export_category("Dream")
 @export var last_link: DreamLink
 
 @export_category("Player")
 @export var collected_fragments: Array[DreamFragment]
+
+enum UpdateMethod {Add, Multiply, Set}
+func update_weights(method: UpdateMethod, integrity_change: float, lucidity_change: float):
+	match method:
+		UpdateMethod.Add:
+			integrity += integrity_change
+			lucidity += lucidity_change
+		UpdateMethod.Multiply:
+			integrity *= integrity_change
+			lucidity *= lucidity_change
+		UpdateMethod.Set:
+			integrity = integrity_change
+			lucidity = lucidity_change
+		

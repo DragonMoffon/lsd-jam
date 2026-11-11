@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://duncpsbmdlla6" path="res://singletons/dream_loader.tscn" id="1_fgyl8"]
 
-[node name="Root" type="Node3D" unique_id=451151781]
+[node name="Root" type="Node" unique_id=1710272751]
 process_mode = 3
 
 [node name="DreamLoader" parent="." unique_id=1098553390 instance=ExtResource("1_fgyl8")]

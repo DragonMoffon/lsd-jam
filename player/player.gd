@@ -23,19 +23,19 @@ const LOOK_SPEED := 0.5
 const FOCUS_TIMESCALE := 0.05 # TODO: Audio timescale (slowing?)
 const BASE_TIMESCALE := 1.0
 
-func spawn(location: Vector3, pitch: float = 0.0, yaw: float = 0.0, scale: float = 1.0):
+func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0, new_scale: float = 1.0):
 	cursor.position = Vector2(0.0, 0.0)
 	sprint_time = Time.get_ticks_msec()
 	focus_look_time = sprint_time
 	
-	position = location
-	camera.rotation_degrees.x = pitch
-	camera.rotation_degrees.y = yaw
+	position = new_location
+	camera.rotation_degrees.x = new_pitch
+	camera.rotation_degrees.y = new_yaw
 	camera.rotation_degrees.z = 0.0
 	
-	camera.position.y = 0.8 * scale
-	collider.height = 2 * scale
-	collider.radius = 0.5 * scale
+	camera.position.y = 0.8 * new_scale
+	collider.height = 2 * new_scale
+	collider.radius = 0.5 * new_scale
 	# TODO: Scale collider
 
 func _process_move(delta: float):

@@ -15,9 +15,7 @@ func _ready() -> void:
 	if DataManager.save != null: # A save was autoloaded so load it
 		_on_save_loaded()
 		
-
 func _on_save_loaded():
-	print("save loaded!")
 	navigate_to_dream(DataManager.save.last_link, true)
 
 func _on_navigate_dream(link: DreamLink) -> void:
@@ -47,15 +45,17 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	# TODO: Make loading dreams better because loading them from disc everytime seems awful???
 	if current_dream != null:
 		current_dream.queue_free()
+	# wait frame to ensure the node has been unloaded before loading next dream
+	await get_tree().process_frame
+	
+	# Update saves information about active link and active dream
+	DataManager.save.last_link = link
 	
 	# Place Player
 	player.spawn(link.location, link.pitch, link.yaw, link.scale)
 	# Unpause the phyiscs engine to actually move the player before we spawn the new scene in
 	set_physics_process(true)
 	
-	# wait frame to ensure the node has been unloaded before loading next dream
-	await get_tree().process_frame
-
 	# Get async loaded level and add to node tree
 	var packed_dream: PackedScene = ResourceLoader.load_threaded_get(link.dream)
 	current_dream = packed_dream.instantiate()

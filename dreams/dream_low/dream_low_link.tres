@@ -7,4 +7,5 @@ script = ExtResource("1_k5fj5")
 name = "Enter Low Dream"
 fade_color = Color(0.5595232, 1.2754649e-06, 3.3691526e-07, 1)
 dream = "uid://b6tlmb60hur7e"
+integrity_change = -100.0
 metadata/_custom_type_script = "uid://7h6kyhy3kqgu"

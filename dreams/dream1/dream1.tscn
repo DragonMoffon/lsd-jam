@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bai8ptanpo2yh" path="res://dreams/dream.gd" id="1_swgwi"]
 [ext_resource type="PackedScene" uid="uid://oxa0jshvvlf5" path="res://dreams/dream_door.tscn" id="2_c0b36"]
 [ext_resource type="Resource" uid="uid://cgdggkecpc6ab" path="res://dreams/dream1/dream2_link.tres" id="3_25bfy"]
-[ext_resource type="PackedScene" uid="uid://b2jqaqtu6422p" path="res://dreams/DreamCage.tscn" id="4_ntxi3"]
 [ext_resource type="Resource" uid="uid://b4kvv1u30h3x4" path="res://dreams/dream_low/dream_low_link.tres" id="5_dtd8k"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_6sf1m"]
@@ -49,7 +48,7 @@ ssao_enabled = true
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_m14s3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_huuin"]
-size = Vector3(100, 100, 100)
+size = Vector3(295.10254, 17.408691, 369.2188)
 
 [node name="Dream1" type="Node3D" unique_id=1820168175]
 process_mode = 1
@@ -93,11 +92,12 @@ camera_attributes = SubResource("CameraAttributesPractical_m14s3")
 transform = Transform3D(0.8067637, 0.30519062, 0.5059558, -0.5683974, 0.16691874, 0.80564415, 0.16142155, -0.9375484, 0.30813348, 0, 0, 0)
 shadow_enabled = true
 
-[node name="DreamCage" parent="." unique_id=1681740454 instance=ExtResource("4_ntxi3")]
+[node name="DreamDoor" parent="." unique_id=2000692532 instance=ExtResource("2_c0b36")]
 link = ExtResource("5_dtd8k")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamCage" unique_id=244471391]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=244471391]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.380371, -41.295654, -77.78897)
 shape = SubResource("BoxShape3D_huuin")
 
 [connection signal="navigate_dream" from="TestSphere/DreamDoor" to="." method="_on_navigate_dream"]
-[connection signal="navigate_dream" from="DreamCage" to="." method="_on_navigate_dream"]
+[connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]

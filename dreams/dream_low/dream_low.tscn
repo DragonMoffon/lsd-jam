@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b6tlmb60hur7e"]
 
 [ext_resource type="Script" uid="uid://bai8ptanpo2yh" path="res://dreams/dream.gd" id="1_k0b03"]
+[ext_resource type="PackedScene" uid="uid://oxa0jshvvlf5" path="res://dreams/dream_door.tscn" id="2_2mjot"]
 [ext_resource type="Resource" uid="uid://b4kvv1u30h3x4" path="res://dreams/dream_low/dream_low_link.tres" id="3_yxr0i"]
-[ext_resource type="PackedScene" uid="uid://b2jqaqtu6422p" path="res://dreams/DreamCage.tscn" id="4_2tsef"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_utxwm"]
 size = Vector3(10, 1, 10)
@@ -10,8 +10,8 @@ size = Vector3(10, 1, 10)
 [sub_resource type="BoxMesh" id="BoxMesh_huuin"]
 size = Vector3(10, 1, 10)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_182vq"]
-size = Vector3(100, 100, 100)
+[sub_resource type="BoxShape3D" id="BoxShape3D_huuin"]
+size = Vector3(100, 1, 100)
 
 [node name="DreamLow" type="Node3D" unique_id=276314276]
 script = ExtResource("1_k0b03")
@@ -27,11 +27,11 @@ shape = SubResource("BoxShape3D_utxwm")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
 mesh = SubResource("BoxMesh_huuin")
 
-[node name="DreamCage" parent="." unique_id=1681740454 instance=ExtResource("4_2tsef")]
+[node name="DreamDoor" parent="." unique_id=2000692532 instance=ExtResource("2_2mjot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.4596586, 0)
 link = ExtResource("3_yxr0i")
-is_interactable = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamCage" unique_id=1934800401]
-shape = SubResource("BoxShape3D_182vq")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=577120986]
+shape = SubResource("BoxShape3D_huuin")
 
-[connection signal="navigate_dream" from="DreamCage" to="." method="_on_navigate_dream"]
+[connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]

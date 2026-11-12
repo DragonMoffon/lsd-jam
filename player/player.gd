@@ -36,7 +36,13 @@ func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0, 
 	camera.position.y = 0.8 * new_scale
 	collider.height = 2 * new_scale
 	collider.radius = 0.5 * new_scale
-	# TODO: Scale collider
+	
+	# Force the player's phyiscs transform to sync with their node transform.
+	# If this isn't done there will be a frame of any new dream where they will
+	# still be at their old location.
+	PhysicsServer3D.body_set_mode(get_rid(), PhysicsServer3D.BODY_MODE_STATIC)
+	force_update_transform()
+	PhysicsServer3D.body_set_mode(get_rid(), PhysicsServer3D.BODY_MODE_KINEMATIC)
 
 func _process_move(delta: float):
 	cursor.position = Util.smerp2d(cursor.position, Vector2(0.0, 0.0), delta,  1.0)

@@ -1,11 +1,17 @@
 [gd_resource type="Resource" script_class="DreamLink" format=3 uid="uid://b4kvv1u30h3x4"]
 
 [ext_resource type="Script" uid="uid://7h6kyhy3kqgu" path="res://dreams/dream_link.gd" id="1_k5fj5"]
+[ext_resource type="Script" uid="uid://bf307mllbswno" path="res://dreams/dream_weights.gd" id="2_blhx8"]
+
+[sub_resource type="Resource" id="Resource_2jjm7"]
+script = ExtResource("2_blhx8")
+lucidity = -100.0
+metadata/_custom_type_script = "uid://bf307mllbswno"
 
 [resource]
 script = ExtResource("1_k5fj5")
 name = "Enter Low Dream"
 fade_color = Color(0.5595232, 1.2754649e-06, 3.3691526e-07, 1)
 dream = "uid://b6tlmb60hur7e"
-integrity_change = -100.0
+weight_modifiers = SubResource("Resource_2jjm7")
 metadata/_custom_type_script = "uid://7h6kyhy3kqgu"

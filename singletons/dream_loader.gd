@@ -45,6 +45,7 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	# TODO: Make loading dreams better because loading them from disc everytime seems awful???
 	if current_dream != null:
 		current_dream.queue_free()
+	
 	# wait frame to ensure the node has been unloaded before loading next dream
 	await get_tree().process_frame
 	

@@ -2,8 +2,8 @@ extends Node
 
 const SETTINGS_PATH = "user://settings.res"
 @export var settings_override: Settings
-@export var duplicate_settings: bool = false
 @export var save_override: SaveData
+@export var duplicate_settings: bool = false
 @export var duplicate_save: bool = false
 var settings: Settings
 var save: SaveData
@@ -13,6 +13,16 @@ signal save_loaded
 
 signal integrity_changed(old: float, new: float); func _on_integerity_changed(old: float, new: float): integrity_changed.emit(old, new)
 signal lucidity_changed(old: float, new: float);  func _on_lucidity_changed(old: float, new: float): lucidity_changed.emit(old, new)
+signal weights_changed
+
+func update_weights(...modifiers: Array):
+	if save == null:
+		push_warning("No save loaded no weights were updated")
+		return
+	for modifier in modifiers:
+		if modifier.has_method("update_weights"):
+			modifier.update_weights(save)
+	weights_changed.emit()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_pause"):
@@ -28,10 +38,10 @@ func _disconnect_save_signals():
 
 func _ready():
 	_load_settings()
-	if settings.load_automatically and settings.active_save_path != "" and settings.active_save_path != null:
+	if settings.load_automatically:
 		if save_override != null:
 			load_save(save_override)
-		else:
+		elif settings.active_save_path != "" and settings.active_save_path != null:
 			load_save_path(settings.active_save_path)
 	
 func _notification(what: int) -> void:

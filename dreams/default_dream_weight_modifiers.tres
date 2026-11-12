@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="WeightModifiers" format=3 uid="uid://dmxflequh6cek"]
+
+[ext_resource type="Script" uid="uid://bf307mllbswno" path="res://dreams/dream_weights.gd" id="1_dwbr5"]
+
+[resource]
+script = ExtResource("1_dwbr5")
+metadata/_custom_type_script = "uid://bf307mllbswno"

@@ -7,6 +7,6 @@
 [node name="DataManager" type="Node" unique_id=692324605]
 script = ExtResource("1_qtim8")
 settings_override = ExtResource("2_gxl74")
-duplicate_settings = true
 save_override = ExtResource("3_cnuqi")
+duplicate_settings = true
 duplicate_save = true

@@ -10,7 +10,4 @@ extends Resource
 @export_range(-180, 180) var yaw: float = 0.0
 @export_range(0, 2) var scale: float = 1.0
 
-@export_category("Weight Adjustment")
-@export_enum("Add", "Mulitply", "Set") var change_method: int = 0
-@export var integrity_change: float = 0.0
-@export var lucidity_change: float = 0.0
+@export var weight_modifiers: WeightModifiers = preload("res://dreams/default_dream_weight_modifiers.tres")

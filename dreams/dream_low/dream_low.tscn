@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bai8ptanpo2yh" path="res://dreams/dream.gd" id="1_k0b03"]
 [ext_resource type="PackedScene" uid="uid://oxa0jshvvlf5" path="res://dreams/dream_door.tscn" id="2_2mjot"]
 [ext_resource type="Resource" uid="uid://b4kvv1u30h3x4" path="res://dreams/dream_low/dream_low_link.tres" id="3_yxr0i"]
+[ext_resource type="Resource" uid="uid://qyaywypfrbku" path="res://dreams/dream2/dream1_link.tres" id="4_2tsef"]
+[ext_resource type="Resource" uid="uid://cgdggkecpc6ab" path="res://dreams/dream1/dream2_link.tres" id="5_kdqy8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_utxwm"]
 size = Vector3(10, 1, 10)
@@ -12,6 +14,37 @@ size = Vector3(10, 1, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_huuin"]
 size = Vector3(100, 1, 100)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_huuin"]
+radius = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kdqy8"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_huuin"]
+material = SubResource("StandardMaterial3D_kdqy8")
+radius = 0.125
+height = 0.25
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kdqy8"]
+sky_top_color = Color(0.4204055, 0, 0.063877, 1)
+sky_horizon_color = Color(0.24161834, 0, 0.008793963, 1)
+ground_bottom_color = Color(0.15863663, 0, 0.004206438, 1)
+ground_horizon_color = Color(0.24161834, 0, 0.008793963, 1)
+
+[sub_resource type="Sky" id="Sky_ootpb"]
+sky_material = SubResource("ProceduralSkyMaterial_kdqy8")
+
+[sub_resource type="Environment" id="Environment_dr6sn"]
+background_mode = 2
+sky = SubResource("Sky_ootpb")
+ambient_light_color = Color(0.4204055, 0, 0.063877, 1)
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_svhrh"]
 
 [node name="DreamLow" type="Node3D" unique_id=276314276]
 script = ExtResource("1_k0b03")
@@ -34,4 +67,45 @@ link = ExtResource("3_yxr0i")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=577120986]
 shape = SubResource("BoxShape3D_huuin")
 
+[node name="DreamDoor2" parent="." unique_id=1812551873 instance=ExtResource("2_2mjot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5)
+link = ExtResource("4_2tsef")
+is_touchable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor2" unique_id=1264192646]
+shape = SubResource("SphereShape3D_huuin")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="DreamDoor2" unique_id=1275408818]
+light_size = 0.5
+omni_range = 9.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DreamDoor2" unique_id=221451965]
+mesh = SubResource("SphereMesh_huuin")
+
+[node name="DreamDoor3" parent="." unique_id=1766696132 instance=ExtResource("2_2mjot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 5)
+link = ExtResource("5_kdqy8")
+is_touchable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor3" unique_id=1985647283]
+shape = SubResource("SphereShape3D_huuin")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="DreamDoor3" unique_id=452856448]
+light_size = 0.5
+omni_range = 9.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DreamDoor3" unique_id=2016616291]
+mesh = SubResource("SphereMesh_huuin")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1592143778]
+environment = SubResource("Environment_dr6sn")
+camera_attributes = SubResource("CameraAttributesPractical_svhrh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1363022054]
+transform = Transform3D(0.8067637, 0.30519062, 0.5059558, -0.5683974, 0.16691874, 0.80564415, 0.16142155, -0.9375484, 0.30813348, 0, 0, 0)
+light_energy = 0.0
+sky_mode = 2
+
 [connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]
+[connection signal="navigate_dream" from="DreamDoor2" to="." method="_on_navigate_dream"]
+[connection signal="navigate_dream" from="DreamDoor3" to="." method="_on_navigate_dream"]

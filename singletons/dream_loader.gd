@@ -23,6 +23,7 @@ func _on_navigate_dream(link: DreamLink) -> void:
 		navigate_to_dream(link)
 	
 func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
+	print("starting to navigate")
 	if navigating: # If we are already navigating ignore any requests to navigate again
 		return 
 	navigating = true
@@ -66,12 +67,12 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	
 	# wait frame to ensure the node has been added to node tree
 	await get_tree().process_frame
-	get_tree().paused = false 
+	get_tree().paused = false	
 	
 	# Fade Out
 	tween.play()
 	await tween.finished
 	fader.visible = false
 	tween.kill()
-	
+	print("finished navigating")
 	navigating = false

@@ -5,7 +5,7 @@
 
 [sub_resource type="Resource" id="Resource_2jjm7"]
 script = ExtResource("2_blhx8")
-lucidity = -100.0
+integrity = -100.0
 metadata/_custom_type_script = "uid://bf307mllbswno"
 
 [resource]

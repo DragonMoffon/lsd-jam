@@ -11,6 +11,7 @@ signal navigate_dream(link: DreamLink)
 
 func interact():
 	if is_interactable:
+		print("Hello?")
 		navigate()
 		
 func touch(_body: Node3D): # The door has a mask of just the player layer so this should be fine

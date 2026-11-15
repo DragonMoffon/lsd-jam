@@ -6,6 +6,8 @@ extends CharacterBody3D
 @export var cursor: Sprite2D
 @export var collider: CapsuleShape3D
 @export_range(0.0, 2.0) var look_sensitivity: float = 1.0
+@export_range(0.0, 180.0) var focus_yaw_range: float = 15.0
+@export_range(0.0, 90.0) var focus_pitch_range: float = 15.0
 
 const FOV_MOVE := 75.0
 const FOV_FOCUS := 60.0
@@ -15,6 +17,7 @@ const SPRINT_SPEED := 15.0
 var sprint_time := 0.0
 var is_foward_sprinting := false
 const SPRINT_BUFFER := 320 # ms
+var look_direction := Vector2(0.0, 0.0) # What are the angles the player's camera should use
 var focus_look_time := 0.0 # When should the player camera start moving to look
 var focus_target := Vector2(0.0, 0.0) # What location should the player focus on
 const LOOK_DELAY := 100 # ms
@@ -29,8 +32,9 @@ func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0, 
 	focus_look_time = sprint_time
 	
 	position = new_location
-	camera.rotation_degrees.x = new_pitch
-	camera.rotation_degrees.y = new_yaw
+	look_direction = Vector2(new_pitch, new_yaw) # TODO: handle player being rotated
+	camera.rotation_degrees.x = look_direction.x
+	camera.rotation_degrees.y = look_direction.y
 	camera.rotation_degrees.z = 0.0
 	
 	camera.position.y = 0.8 * new_scale
@@ -45,9 +49,15 @@ func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0, 
 	PhysicsServer3D.body_set_mode(get_rid(), PhysicsServer3D.BODY_MODE_KINEMATIC)
 
 func _process_move(delta: float):
-	cursor.position = Util.smerp2d(cursor.position, Vector2(0.0, 0.0), delta,  1.0)
-	camera.fov = move_toward(camera.fov, FOV_MOVE, 1)
 	Engine.set_time_scale(move_toward(Engine.get_time_scale(), BASE_TIMESCALE, 0.1))
+	cursor.position = Util.smerp2d(cursor.position, Vector2(0.0, 0.0), delta,  1.0)
+	
+	# Camera look code
+	camera.fov = move_toward(camera.fov, FOV_MOVE, 1)
+	camera.rotation_degrees.x = look_direction.x
+	camera.rotation_degrees.y = look_direction.y
+	
+	# Movement code
 	var input_dir := Input.get_vector("left", "right", "forward", "backwards")
 	var is_sprinting := (Input.is_action_pressed("sprint") or is_foward_sprinting) and Input.is_action_pressed("forward")
 	var speed := SPRINT_SPEED if is_sprinting else SPEED
@@ -59,10 +69,13 @@ func _process_move(delta: float):
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 	
-	move_and_slide()
-	
 func _focus_look_towards(true_delta: float):	
-	var resolution = get_viewport().size / 2.0
+	var resolution : Vector2 = get_viewport().size / 2.0
+	var mouse_offset : Vector2 = cursor.position / resolution
+	camera.rotation_degrees.x = look_direction.x - clampf(mouse_offset.y, -1.0, 1.0) * focus_pitch_range
+	camera.rotation_degrees.y = look_direction.y - clampf(mouse_offset.x, -1.0, 1.0) * focus_yaw_range
+	
+	return
 	var target: Vector2 = focus_target
 	# Find rotation needed to move cursor to center of screen
 	var direction = -camera.project_ray_normal(target + resolution)
@@ -110,7 +123,18 @@ func _process_focus(delta: float):
 	if Input.is_action_just_pressed("interact"):
 		_focus_ray_cast()
 
-	move_and_slide()
+func _ground_test_raycast() -> Vector3:
+	var origin = global_position
+	var target = global_position - Vector3(0.0, 1.5, 0.0)
+	var query = PhysicsRayQueryParameters3D.create(origin, target, 0b1000)
+	var result = get_world_3d().direct_space_state.intersect_ray(query)
+	
+	if "position" in result:
+		print(global_position - result["position"] + Vector3(0.0, 1.0, 0.0))
+		return result["position"] + Vector3(0.0, 1.0, 0.0)
+	
+	return position
+	
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -120,15 +144,18 @@ func _physics_process(delta: float) -> void:
 		_process_focus(delta)
 	else:
 		_process_move(delta)
+	move_and_slide()
+	if not is_on_floor():
+		global_position = _ground_test_raycast()
 		
 func _input_move(event: InputEvent):
 	if event is InputEventMouseMotion:
-		camera.rotation_degrees.y = fmod(camera.rotation_degrees.y - event.screen_relative.x * LOOK_SPEED * look_sensitivity, 360);
-		if camera.rotation_degrees.y < -180:
-			camera.rotation_degrees.y += 360
-		elif camera.rotation_degrees.y > 180:
-			camera.rotation_degrees.y -= 360
-		camera.rotation_degrees.x = clamp(camera.rotation_degrees.x - event.screen_relative.y * LOOK_SPEED * look_sensitivity, -89, 89)
+		look_direction.x =  clamp(look_direction.x - event.screen_relative.y * LOOK_SPEED * look_sensitivity, -89, 89)
+		look_direction.y = fmod(look_direction.y - event.screen_relative.x * LOOK_SPEED * look_sensitivity, 360);
+		if look_direction.y < -180:
+			look_direction.y += 360
+		elif look_direction.y > 180:
+			look_direction.y -= 360
 	elif event.is_action("forward"):
 		if event.is_pressed():
 			if not event.is_echo():

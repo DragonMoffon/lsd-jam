@@ -23,7 +23,6 @@ func _on_navigate_dream(link: DreamLink) -> void:
 		navigate_to_dream(link)
 	
 func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
-	print("starting to navigate")
 	if navigating: # If we are already navigating ignore any requests to navigate again
 		return 
 	navigating = true
@@ -74,5 +73,4 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	await tween.finished
 	fader.visible = false
 	tween.kill()
-	print("finished navigating")
 	navigating = false

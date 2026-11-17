@@ -58,4 +58,3 @@ This is mostly for my sake, but the steps to adding a new weight modifier are:
 3) Add that signal to the `_connect_save_signals` and `_disconnect_save_signals` methods
 4) Add the new weight and its modification method to `res://dream/dream_weights.gd`
 5) Add the new weight to the `WeightModifiers.update_weights` method
-

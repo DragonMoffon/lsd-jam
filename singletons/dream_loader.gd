@@ -53,7 +53,7 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	DataManager.save.last_link = link
 	
 	# Place Player
-	player.spawn(link.location, link.pitch, link.yaw, link.scale)
+	player.spawn(link.location, link.pitch, link.yaw)
 	# Unpause the phyiscs engine to actually move the player before we spawn the new scene in
 	set_physics_process(true)
 	

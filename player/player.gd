@@ -25,8 +25,7 @@ const LOOK_SPEED := 0.5
 
 const FOCUS_TIMESCALE := 0.05 # TODO: Audio timescale (slowing?)
 const BASE_TIMESCALE := 1.0
-
-func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0, new_scale: float = 1.0):
+func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0):
 	cursor.position = Vector2(0.0, 0.0)
 	sprint_time = Time.get_ticks_msec()
 	focus_look_time = sprint_time
@@ -37,9 +36,10 @@ func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0, 
 	camera.rotation_degrees.y = look_direction.y
 	camera.rotation_degrees.z = 0.0
 	
-	camera.position.y = 0.8 * new_scale
-	collider.height = 2 * new_scale
-	collider.radius = 0.5 * new_scale
+	# TODO: set player scale based on savedata and player's move speed
+	# camera.position.y = 0.8 * new_scale
+	# collider.height = 2 * new_scale
+	# collider.radius = 0.5 * new_scale
 	
 	# Force the player's phyiscs transform to sync with their node transform.
 	# If this isn't done there will be a frame of any new dream where they will

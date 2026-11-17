@@ -27,6 +27,7 @@ var is_foward_sprinting := false # Is the player sprinting because they double t
 var look_direction := Vector2(0.0, 0.0) # What are the angles the player's camera should use
 var focus_look_time := 0.0 # When should the player camera start moving to look
 var focus_target := Vector2(0.0, 0.0) # What location should the player focus on
+var is_on_ground_or_slope := true
 
 func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0):
 	cursor.position = Vector2(0.0, 0.0)
@@ -136,11 +137,11 @@ func _ground_test_raycast() -> Vector3:
 	var result = get_world_3d().direct_space_state.intersect_ray(query)
 	
 	if "position" in result:
-		print(global_position - result["position"] + Vector3(0.0, 1.0, 0.0))
+		is_on_ground_or_slope = true
 		return result["position"] + Vector3(0.0, 1.0, 0.0)
 	
+	is_on_ground_or_slope = false
 	return position
-	
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -152,7 +153,10 @@ func _physics_process(delta: float) -> void:
 		_process_move(delta)
 	move_and_slide()
 	if not is_on_floor():
-		global_position = _ground_test_raycast()
+		if is_on_ground_or_slope:
+			global_position = _ground_test_raycast()
+	else:
+		is_on_ground_or_slope = true
 		
 func _input_move(event: InputEvent):
 	if event is InputEventMouseMotion:

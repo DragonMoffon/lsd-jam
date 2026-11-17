@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bm8vw50vgh76"]
+
+[ext_resource type="Script" uid="uid://bai8ptanpo2yh" path="res://dreams/dream.gd" id="1_emhwv"]
+[ext_resource type="Material" uid="uid://dfoqradmbq0hw" path="res://dreams/beach/Motuihe Terrain Shader.tres" id="2_6ixuj"]
+[ext_resource type="ArrayMesh" uid="uid://b18adhsje8k7t" path="res://assets/models/Motuihe.obj" id="2_fpv5s"]
+[ext_resource type="Shape3D" uid="uid://d1pjym5k53gs7" path="res://dreams/beach/Motuihe Collision Mesh.tres" id="3_koqef"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_koqef"]
+ground_bottom_color = Color(0.101960786, 0.14117648, 0.48235294, 1)
+ground_horizon_color = Color(0.5102181, 0.6716187, 0.8386589, 1)
+ground_curve = 0.021435477
+
+[sub_resource type="Sky" id="Sky_ntxi3"]
+sky_material = SubResource("ProceduralSkyMaterial_koqef")
+
+[sub_resource type="Environment" id="Environment_6ixuj"]
+background_mode = 2
+sky = SubResource("Sky_ntxi3")
+ssao_enabled = true
+
+[node name="BeachDream" type="Node3D" unique_id=113608429]
+script = ExtResource("1_emhwv")
+metadata/_custom_type_script = "uid://bai8ptanpo2yh"
+
+[node name="Island Mesh" type="MeshInstance3D" parent="." unique_id=1631265339]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4537964, 0, 1.7710571)
+material_override = ExtResource("2_6ixuj")
+mesh = ExtResource("2_fpv5s")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=178848890]
+collision_layer = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1391458167]
+shape = ExtResource("3_koqef")
+debug_color = Color(0, 0.6, 0.69803923, 0)
+debug_fill = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=370123629]
+environment = SubResource("Environment_6ixuj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=2143166276]
+transform = Transform3D(0.8067637, 0.30519062, 0.5059558, -0.5683974, 0.16691874, 0.80564415, 0.16142155, -0.9375484, 0.30813348, 0, 0, 0)
+shadow_enabled = true

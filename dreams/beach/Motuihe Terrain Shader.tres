@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dfoqradmbq0hw"]
+
+[ext_resource type="Shader" uid="uid://6f7nvwol7g5d" path="res://dreams/beach/Motuihe Terrain Shader.gdshader" id="1_2f2um"]
+
+[sub_resource type="Gradient" id="Gradient_2f2um"]
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0, 0.045454547, 0.07575758, 0.09848485, 0.125, 0.5984849)
+colors = PackedColorArray(0.103890575, 0.13980645, 0.48255074, 1, 0.21812004, 0.27357876, 0.7532073, 1, 0.9203635, 0.9070697, 0.5740904, 1, 0.8509804, 0.74509805, 0.26666668, 1, 0.2956633, 0.49361235, 0.16264004, 1, 0.40696713, 0.45472026, 0.3040604, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6ixuj"]
+gradient = SubResource("Gradient_2f2um")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2f2um")
+shader_parameter/minimum_level = -2.0
+shader_parameter/maximum_level = 65.0
+shader_parameter/gradient = SubResource("GradientTexture1D_6ixuj")

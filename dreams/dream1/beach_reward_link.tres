@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DreamLink" format=3 uid="uid://bnbomch5y5etm"]
+
+[ext_resource type="Script" uid="uid://7h6kyhy3kqgu" path="res://dreams/dream_link.gd" id="1_jfj5y"]
+[ext_resource type="Resource" uid="uid://dmxflequh6cek" path="res://dreams/default_dream_weight_modifiers.tres" id="2_6ejm2"]
+
+[resource]
+script = ExtResource("1_jfj5y")
+name = "Beach Reward Link"
+fade_color = Color(1, 1, 1, 1)
+dream = "uid://bm8vw50vgh76"
+location = Vector3(0, 30, 0)
+metadata/_custom_type_script = "uid://7h6kyhy3kqgu"

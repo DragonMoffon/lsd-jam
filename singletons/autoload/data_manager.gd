@@ -13,6 +13,7 @@ signal save_loaded
 
 signal integrity_changed(old: float, new: float); func _on_integerity_changed(old: float, new: float): integrity_changed.emit(old, new)
 signal lucidity_changed(old: float, new: float);  func _on_lucidity_changed(old: float, new: float): lucidity_changed.emit(old, new)
+signal scale_changed(old: float, new: float); func _on_scale_changed(old: float, new: float): scale_changed.emit(old, new)
 signal weights_changed
 
 func update_weights(...modifiers: Array):
@@ -31,10 +32,12 @@ func _input(event: InputEvent) -> void:
 func _connect_save_signals():
 	save.integrity_changed.connect(_on_integerity_changed)
 	save.lucidity_changed.connect(_on_lucidity_changed)
+	save.scale_changed.connect(_on_scale_changed)
 	
 func _disconnect_save_signals():
 	save.integrity_changed.disconnect(_on_integerity_changed)
 	save.lucidity_changed.disconnect(_on_lucidity_changed)
+	save.scale_changed.disconnect(_on_scale_changed)
 
 func _ready():
 	_load_settings()

@@ -24,6 +24,17 @@ signal lucidity_changed(old: float, new: float); @export_custom(PROPERTY_HINT_ON
 	get:
 		return lucidity
 		
+signal scale_changed(old: float, new: float); @export_custom(PROPERTY_HINT_ONESHOT, "") var scale: float = 1.0:
+	set(value):
+		if scale == value:
+			return
+		var old := scale
+		scale = value
+		scale_changed.emit(old, value)
+		emit_changed()
+	get:
+		return scale
+		
 @export_category("Dream")
 @export var last_link: DreamLink
 

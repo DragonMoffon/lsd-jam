@@ -9,22 +9,25 @@ extends CharacterBody3D
 @export_range(0.0, 180.0) var focus_yaw_range: float = 15.0
 @export_range(0.0, 90.0) var focus_pitch_range: float = 15.0
 
-const FOV_MOVE := 75.0
-const FOV_FOCUS := 60.0
+const FOV_MOVE := 75.0 # Field of view when moving around normally
+const FOV_FOCUS := 60.0 # Field of view when focusing/looking around
+const SPEED := 5.0 # Base player speed
+const SPRINT_SPEED := 15.0 # Sprinting player speed
+const SPRINT_BUFFER := 320 # ms in which a double forward tap starts sprinting
+const LOOK_DELAY := 100 # ms after which the player's focus will center on the cursor
+const LOOK_SPEED := 0.5 # Base mouse sensitivity of the plater
+const FOCUS_TIMESCALE := 0.05 # How much time should slow when the player is focusing # TODO: Audio timescale (slowing?)
+const BASE_TIMESCALE := 1.0 # The base speed rate (always 1.0 basically)
+const TRANSITION_LENGTH := 0.25 # Number of seconds it should take to go from moving -> focus and back
+const TIMESCALE_DELTA := abs(FOCUS_TIMESCALE - BASE_TIMESCALE) / TRANSITION_LENGTH
+const FOV_DELTA := abs(FOV_FOCUS - FOV_MOVE) / TRANSITION_LENGTH
 
-const SPEED := 5.0
-const SPRINT_SPEED := 15.0
-var sprint_time := 0.0
-var is_foward_sprinting := false
-const SPRINT_BUFFER := 320 # ms
+var sprint_time := 0.0 # Time tracker using SPRINT_BUFFER to decide if should sprint
+var is_foward_sprinting := false # Is the player sprinting because they double tapped forward?
 var look_direction := Vector2(0.0, 0.0) # What are the angles the player's camera should use
 var focus_look_time := 0.0 # When should the player camera start moving to look
 var focus_target := Vector2(0.0, 0.0) # What location should the player focus on
-const LOOK_DELAY := 100 # ms
-const LOOK_SPEED := 0.5
 
-const FOCUS_TIMESCALE := 0.05 # TODO: Audio timescale (slowing?)
-const BASE_TIMESCALE := 1.0
 func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0):
 	cursor.position = Vector2(0.0, 0.0)
 	sprint_time = Time.get_ticks_msec()
@@ -49,13 +52,16 @@ func spawn(new_location: Vector3, new_pitch: float = 0.0, new_yaw: float = 0.0):
 	PhysicsServer3D.body_set_mode(get_rid(), PhysicsServer3D.BODY_MODE_KINEMATIC)
 
 func _process_move(delta: float):
-	Engine.set_time_scale(move_toward(Engine.get_time_scale(), BASE_TIMESCALE, 0.1))
-	cursor.position = Util.smerp2d(cursor.position, Vector2(0.0, 0.0), delta,  1.0)
+	var true_delta = delta / Engine.get_time_scale()
+	Engine.set_time_scale(move_toward(Engine.get_time_scale(), BASE_TIMESCALE, TIMESCALE_DELTA * true_delta))
+	cursor.position = Util.smerp2d(cursor.position, Vector2(0.0, 0.0), true_delta,  0.01)
 	
 	# Camera look code
-	camera.fov = move_toward(camera.fov, FOV_MOVE, 1)
-	camera.rotation_degrees.x = look_direction.x
-	camera.rotation_degrees.y = look_direction.y
+	camera.fov = move_toward(camera.fov, FOV_MOVE, FOV_DELTA * true_delta)
+	var resolution : Vector2 = get_viewport().size / 2.0
+	var mouse_offset : Vector2 = cursor.position / resolution
+	camera.rotation_degrees.x = look_direction.x - clampf(mouse_offset.y, -1.0, 1.0) * focus_pitch_range
+	camera.rotation_degrees.y = look_direction.y - clampf(mouse_offset.x, -1.0, 1.0) * focus_yaw_range
 	
 	# Movement code
 	var input_dir := Input.get_vector("left", "right", "forward", "backwards")
@@ -110,11 +116,11 @@ func _focus_ray_cast():
 		result["collider"].interact()
 
 func _process_focus(delta: float):
-	Engine.set_time_scale(move_toward(Engine.get_time_scale(), FOCUS_TIMESCALE, 0.1))
+	var true_delta = delta / Engine.get_time_scale()
+	Engine.set_time_scale(move_toward(Engine.get_time_scale(), FOCUS_TIMESCALE, TIMESCALE_DELTA * true_delta))
 	velocity.x = 0
 	velocity.z = 0
-	var true_delta = delta / Engine.get_time_scale()
-	camera.fov = move_toward(camera.fov, FOV_FOCUS, 60.0*true_delta)
+	camera.fov = move_toward(camera.fov, FOV_FOCUS, FOV_DELTA * true_delta)
 
 	if focus_look_time < Time.get_ticks_msec():
 		focus_target = cursor.position

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://oxa0jshvvlf5" path="res://dreams/dream_door.tscn" id="2_7vk2w"]
 [ext_resource type="Resource" uid="uid://qyaywypfrbku" path="res://dreams/dream2/dream1_link.tres" id="3_bx5kx"]
 [ext_resource type="Resource" uid="uid://b4kvv1u30h3x4" path="res://dreams/dream_low/dream_low_link.tres" id="5_5dgdw"]
+[ext_resource type="Texture2D" uid="uid://blmbvx0f08ynk" path="res://assets/images/FullMoon.png" id="6_eq3u1"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_thnhf"]
 radius = 3.329
@@ -32,6 +33,10 @@ size = Vector3(30, 1, 30)
 [sub_resource type="BoxMesh" id="BoxMesh_huuin"]
 size = Vector3(30, 1, 30)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eq3u1"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_thnhf"]
 size = Vector3(1.0775299, 4.6330566, 2.4813843)
 
@@ -46,8 +51,11 @@ sky_material = SubResource("ProceduralSkyMaterial_smb6q")
 
 [sub_resource type="Environment" id="Environment_obydu"]
 background_mode = 2
+background_energy_multiplier = 0.1
 sky = SubResource("Sky_ootpb")
 ssao_enabled = true
+glow_enabled = true
+glow_bloom = 1.0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8guie"]
 
@@ -128,6 +136,7 @@ link = ExtResource("3_bx5kx")
 is_interactable = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="DreamDoor" unique_id=319591590]
+material_override = SubResource("StandardMaterial3D_eq3u1")
 mesh = SubResource("BoxMesh_thnhf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=2054187695]
@@ -139,6 +148,7 @@ camera_attributes = SubResource("CameraAttributesPractical_8guie")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1052675015]
 transform = Transform3D(0.8067637, 0.30519062, 0.5059558, -0.5683974, 0.16691874, 0.80564415, 0.16142155, -0.9375484, 0.30813348, 0, 0, 0)
+light_energy = 0.1
 shadow_enabled = true
 
 [node name="DreamDoor2" parent="." unique_id=2000692532 instance=ExtResource("2_7vk2w")]
@@ -147,6 +157,14 @@ link = ExtResource("5_5dgdw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor2" unique_id=1216558750]
 shape = SubResource("BoxShape3D_huuin")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1159247608]
+transform = Transform3D(0.8067637, 0.30519056, 0.50595564, -0.56839734, 0.16691871, 0.8056442, 0.16142157, -0.93754834, 0.30813342, 1049.8875, 1671.7587, 639.39484)
+gi_mode = 0
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+pixel_size = 1.0
+texture_filter = 0
+texture = ExtResource("6_eq3u1")
 
 [connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]
 [connection signal="navigate_dream" from="DreamDoor2" to="." method="_on_navigate_dream"]

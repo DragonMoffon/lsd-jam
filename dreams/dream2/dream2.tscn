@@ -137,6 +137,7 @@ is_interactable = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="DreamDoor" unique_id=319591590]
 material_override = SubResource("StandardMaterial3D_eq3u1")
+cast_shadow = 0
 mesh = SubResource("BoxMesh_thnhf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=2054187695]

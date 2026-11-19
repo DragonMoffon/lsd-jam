@@ -11,6 +11,9 @@ fader = NodePath("Screen Fade")
 [node name="Player" parent="." unique_id=221209981 instance=ExtResource("2_mkjn1")]
 process_mode = 1
 look_sensitivity = 0.8
+focus_yaw_range = null
+focus_pitch_range = null
+headbob_amplitude = null
 
 [node name="Screen Fade" type="ColorRect" parent="." unique_id=2093810392]
 process_mode = 3

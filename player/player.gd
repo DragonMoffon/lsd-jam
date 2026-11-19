@@ -8,6 +8,7 @@ extends CharacterBody3D
 @export_range(0.0, 2.0) var look_sensitivity: float = 1.0
 @export_range(0.0, 180.0) var focus_yaw_range: float = 15.0
 @export_range(0.0, 90.0) var focus_pitch_range: float = 15.0
+@export var headbob_amplitude := 0.1
 
 const FOV_MOVE := 75.0 # Field of view when moving around normally
 const FOV_FOCUS := 60.0 # Field of view when focusing/looking around
@@ -21,9 +22,11 @@ const BASE_TIMESCALE := 1.0 # The base speed rate (always 1.0 basically)
 const TRANSITION_LENGTH := 0.25 # Number of seconds it should take to go from moving -> focus and back
 const TIMESCALE_DELTA := abs(FOCUS_TIMESCALE - BASE_TIMESCALE) / TRANSITION_LENGTH
 const FOV_DELTA := abs(FOV_FOCUS - FOV_MOVE) / TRANSITION_LENGTH
+const BOB_FREQ := 1.4
 
 var sprint_time := 0.0 # Time tracker using SPRINT_BUFFER to decide if should sprint
 var is_foward_sprinting := false # Is the player sprinting because they double tapped forward?
+var bob_time := 0.0
 var look_direction := Vector2(0.0, 0.0) # What are the angles the player's camera should use
 var focus_look_time := 0.0 # When should the player camera start moving to look
 var focus_target := Vector2(0.0, 0.0) # What location should the player focus on
@@ -73,8 +76,8 @@ func _process_move(delta: float):
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
-		velocity.z = move_toward(velocity.z, 0, speed)
+		velocity.x = 0.0
+		velocity.z = 0.0
 	
 func _focus_look_towards(true_delta: float):	
 	var resolution : Vector2 = get_viewport().size / 2.0
@@ -129,6 +132,13 @@ func _process_focus(delta: float):
 
 	if Input.is_action_just_pressed("interact"):
 		_focus_ray_cast()
+		
+func _headbob(time: float) -> Vector3:
+	return Vector3(
+		cos(time * BOB_FREQ / 2) * headbob_amplitude,
+		0.8 + sin(time * BOB_FREQ) * headbob_amplitude,
+		0.0
+	)
 
 func _ground_test_raycast() -> Vector3:
 	var origin = global_position
@@ -151,6 +161,8 @@ func _physics_process(delta: float) -> void:
 		_process_focus(delta)
 	else:
 		_process_move(delta)
+	bob_time += delta * velocity.length() * float(is_on_floor() or is_on_ground_or_slope)
+	camera.transform.origin = _headbob(bob_time)
 	move_and_slide()
 	if not is_on_floor():
 		if is_on_ground_or_slope:

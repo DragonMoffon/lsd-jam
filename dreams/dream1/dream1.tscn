@@ -5,7 +5,8 @@
 [ext_resource type="Resource" uid="uid://cgdggkecpc6ab" path="res://dreams/dream1/dream2_link.tres" id="3_25bfy"]
 [ext_resource type="Resource" uid="uid://b4kvv1u30h3x4" path="res://dreams/dream_low/dream_low_link.tres" id="5_dtd8k"]
 [ext_resource type="Resource" uid="uid://bnbomch5y5etm" path="res://dreams/dream1/beach_reward_link.tres" id="5_n7bmx"]
-[ext_resource type="PackedScene" uid="uid://b0desgarji2yv" path="res://assets/models/CRT/1994 CRT.glb" id="6_n7bmx"]
+[ext_resource type="ArrayMesh" uid="uid://itl5b46bqda7" path="res://assets/models/CRT/1994 CRT.obj" id="6_6sf1m"]
+[ext_resource type="Texture2D" uid="uid://crp0ysiuqavw8" path="res://assets/models/CRT/1994 CRT_UV.png" id="7_33o1v"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_6sf1m"]
 radius = 6.0
@@ -87,6 +88,9 @@ top_radius = 2.0
 bottom_radius = 2.0
 height = 1.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ahwr"]
+albedo_texture = ExtResource("7_33o1v")
+
 [node name="Dream1" type="Node3D" unique_id=1820168175]
 process_mode = 1
 script = ExtResource("1_swgwi")
@@ -165,8 +169,10 @@ material_override = SubResource("StandardMaterial3D_dtd8k")
 cast_shadow = 0
 mesh = SubResource("CylinderMesh_thnhf")
 
-[node name="1994 CRT" parent="." unique_id=774049071 instance=ExtResource("6_n7bmx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.36532, 0.008027345, 2.9678874)
+[node name="1994Crt" type="MeshInstance3D" parent="." unique_id=1270372562]
+transform = Transform3D(0.8231323, 0, 0.5678497, 0, 1, 0, -0.5678497, 0, 0.8231323, -23.42034, -0.012751877, 23.133455)
+mesh = ExtResource("6_6sf1m")
+surface_material_override/0 = SubResource("StandardMaterial3D_5ahwr")
 
 [connection signal="navigate_dream" from="TestSphere/DreamDoor" to="." method="_on_navigate_dream"]
 [connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]

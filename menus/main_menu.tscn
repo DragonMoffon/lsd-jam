@@ -1,0 +1,147 @@
+[gd_scene format=3 uid="uid://dubta4gwupttf"]
+
+[ext_resource type="Shader" uid="uid://burwccomiiswp" path="res://addons/BinbunVFX/parralax_mapping.gdshader" id="1_8gy84"]
+[ext_resource type="ArrayMesh" uid="uid://itl5b46bqda7" path="res://assets/models/CRT/1994 CRT.obj" id="2_oblsv"]
+[ext_resource type="Shader" uid="uid://cs26io8gcvr3q" path="res://addons/ursc/canvas_item/dithering.gdshader" id="2_pwbes"]
+[ext_resource type="Texture2D" uid="uid://crp0ysiuqavw8" path="res://assets/models/CRT/1994 CRT_UV.png" id="2_yjgyn"]
+[ext_resource type="Texture2D" uid="uid://cl73sl3ujyotn" path="res://addons/ursc/canvas_item/bayer_filters/bayer16.png" id="3_hswy5"]
+[ext_resource type="Shader" uid="uid://ctsehw6hna72o" path="res://assets/models/CRT/crt_viewport.gdshader" id="3_rqbgu"]
+[ext_resource type="PackedScene" uid="uid://bsguorcsxco7v" path="res://menus/main_menu_gui.tscn" id="3_yjgyn"]
+
+[sub_resource type="GDScript" id="GDScript_pwbes"]
+resource_name = "DEBUG_START_GAME"
+script/source = "extends Node
+
+func _input(event: InputEvent):
+	if event.is_pressed():
+		get_tree().change_scene_to_file(\"res://singletons/root.tscn\")
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vmd75"]
+shader = ExtResource("2_pwbes")
+shader_parameter/color_depth = 32.0
+shader_parameter/dithering_pattern_texture = ExtResource("3_hswy5")
+
+[sub_resource type="SphereMesh" id="SphereMesh_ds513"]
+lightmap_size_hint = Vector2i(316, 159)
+flip_faces = true
+radius = 10.0
+height = 20.0
+
+[sub_resource type="Gradient" id="Gradient_8gy84"]
+offsets = PackedFloat32Array(0, 0.34848484, 0.9886364, 1)
+colors = PackedColorArray(0.42745098, 0.011764706, 0, 1, 0.40573847, 0.011167115, 0, 1, 0.022667855, 0.0006238865, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8gy84"]
+gradient = SubResource("Gradient_8gy84")
+
+[sub_resource type="Gradient" id="Gradient_ij7vn"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u1eok"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hrkic"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_u1eok")
+color_ramp = SubResource("Gradient_ij7vn")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m4p1c"]
+render_priority = 0
+shader = ExtResource("1_8gy84")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_hrkic")
+shader_parameter/albedo_texture = SubResource("GradientTexture1D_8gy84")
+shader_parameter/layers = 12
+shader_parameter/depth_amount = 4.0
+shader_parameter/fade_amount = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oblsv"]
+albedo_texture = ExtResource("2_yjgyn")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_a63lr"]
+viewport_path = NodePath("Menu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oblsv"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_rqbgu")
+shader_parameter/albedo = SubResource("ViewportTexture_a63lr")
+
+[sub_resource type="GDScript" id="GDScript_wl6xk"]
+resource_name = "crt_menu"
+script/source = "extends MeshInstance3D
+
+# TODO: handle cursor motion
+@onready var ORIGIN := position
+@onready var ORIENTATION := rotation_degrees
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	var t = Time.get_ticks_msec() / 1000.0
+	position = ORIGIN + Vector3(
+		cos(t * 1.4 / 2) * 0.05,
+		sin(t * 1.4) * 0.075,
+		0.0
+	)
+	rotation_degrees = ORIENTATION + Vector3(
+		cos(t * 0.3) * 2,
+		0.0,
+		sin(t * 0.66) * 4
+	)
+"
+
+[sub_resource type="Environment" id="Environment_m4p1c"]
+background_energy_multiplier = 0.0
+ambient_light_energy = 0.0
+glow_enabled = true
+
+[node name="MainMenu" type="Node" unique_id=1095723593]
+script = SubResource("GDScript_pwbes")
+
+[node name="Menu" type="SubViewport" parent="." unique_id=1435437003]
+size = Vector2i(720, 480)
+
+[node name="MainMenuGui" parent="Menu" unique_id=643001197 instance=ExtResource("3_yjgyn")]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=827919547]
+material = SubResource("ShaderMaterial_vmd75")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 4
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=554183261]
+handle_input_locally = false
+size = Vector2i(320, 180)
+render_target_update_mode = 4
+
+[node name="Scene" type="Node3D" parent="SubViewportContainer/SubViewport" unique_id=1594162936]
+
+[node name="Dream Portal" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Scene" unique_id=1397118008]
+mesh = SubResource("SphereMesh_ds513")
+surface_material_override/0 = SubResource("ShaderMaterial_m4p1c")
+
+[node name="CRT" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/Scene" unique_id=410788799]
+transform = Transform3D(-0.22399385, -0.104254134, -0.96899825, 0.080276966, 0.9889096, -0.12495322, 0.9712786, -0.105777, -0.21314047, 0.7920613, -0.9287877, 7.732047)
+mesh = ExtResource("2_oblsv")
+surface_material_override/0 = SubResource("StandardMaterial3D_oblsv")
+surface_material_override/1 = SubResource("ShaderMaterial_oblsv")
+script = SubResource("GDScript_wl6xk")
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport/Scene" unique_id=874469245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport/Scene" unique_id=1193995483]
+environment = SubResource("Environment_m4p1c")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport/Scene/WorldEnvironment" unique_id=562252419]
+transform = Transform3D(0.9664862, -0.25554714, -0.024494817, 0.2095105, 0.84030074, -0.5, 0.14835656, 0.4781112, 0.86567885, 0, 0, 0)

@@ -5,6 +5,7 @@
 [ext_resource type="Resource" uid="uid://cgdggkecpc6ab" path="res://dreams/dream1/dream2_link.tres" id="3_25bfy"]
 [ext_resource type="Resource" uid="uid://b4kvv1u30h3x4" path="res://dreams/dream_low/dream_low_link.tres" id="5_dtd8k"]
 [ext_resource type="Resource" uid="uid://bnbomch5y5etm" path="res://dreams/dream1/beach_reward_link.tres" id="5_n7bmx"]
+[ext_resource type="PackedScene" uid="uid://b0desgarji2yv" path="res://assets/models/CRT/1994 CRT.glb" id="6_n7bmx"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_6sf1m"]
 radius = 6.0
@@ -163,6 +164,9 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0
 material_override = SubResource("StandardMaterial3D_dtd8k")
 cast_shadow = 0
 mesh = SubResource("CylinderMesh_thnhf")
+
+[node name="1994 CRT" parent="." unique_id=774049071 instance=ExtResource("6_n7bmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.36532, 0.008027345, 2.9678874)
 
 [connection signal="navigate_dream" from="TestSphere/DreamDoor" to="." method="_on_navigate_dream"]
 [connection signal="navigate_dream" from="DreamDoor" to="." method="_on_navigate_dream"]

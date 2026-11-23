@@ -6,7 +6,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_35uby"]
 shader = ExtResource("1_8yiqe")
-shader_parameter/color_depth = 24.0
+shader_parameter/color_depth = 32.0
 shader_parameter/dithering_pattern_texture = ExtResource("2_ucuid")
 
 [node name="Root" type="Node" unique_id=1710272751]

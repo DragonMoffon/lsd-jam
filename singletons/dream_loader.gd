@@ -74,3 +74,4 @@ func navigate_to_dream(link: DreamLink, skip_fade_in: bool = false):
 	fader.visible = false
 	tween.kill()
 	navigating = false
+	print(DataManager.save.last_link)

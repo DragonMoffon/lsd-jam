@@ -96,7 +96,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.932947, 0.8705139, 6.990822
 shape = SubResource("SphereShape3D_5dgdw")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Ground" unique_id=450004754]
-transform = Transform3D(6.302739, 0, 0, 0, 6.302739, 0, 0, 0, 6.302739, -5.772371, -0.036141872, -10.590408)
+transform = Transform3D(6.302739, 0, 0, 0, 6.302739, 0, 0, 0, 6.302739, -5.772371, 4.059057, -10.590408)
 mesh = ExtResource("2_5dgdw")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="Ground" unique_id=187481209]

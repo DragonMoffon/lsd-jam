@@ -158,6 +158,7 @@ shadow_enabled = true
 
 [node name="DreamDoor" parent="." unique_id=2000692532 instance=ExtResource("2_c0b36")]
 link = ExtResource("5_dtd8k")
+is_interactable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DreamDoor" unique_id=244471391]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.380371, -41.295654, -77.78897)

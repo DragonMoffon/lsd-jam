@@ -17,7 +17,7 @@ func _input(event: InputEvent):
 		get_tree().change_scene_to_file(\"res://singletons/root.tscn\")
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vmd75"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pwbes"]
 shader = ExtResource("2_pwbes")
 shader_parameter/color_depth = 32.0
 shader_parameter/dithering_pattern_texture = ExtResource("3_hswy5")
@@ -57,9 +57,10 @@ shader_parameter/fade_amount = 1.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oblsv"]
 albedo_texture = ExtResource("2_yjgyn")
+grow_amount = 0.205
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_a63lr"]
-viewport_path = NodePath("Menu")
+viewport_path = NodePath("SubViewportContainer/SubViewport/Scene/CRT/Menu")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oblsv"]
 resource_local_to_scene = true
@@ -103,13 +104,8 @@ glow_enabled = true
 [node name="MainMenu" type="Node" unique_id=1095723593]
 script = SubResource("GDScript_pwbes")
 
-[node name="Menu" type="SubViewport" parent="." unique_id=1435437003]
-size = Vector2i(720, 480)
-
-[node name="MainMenuGui" parent="Menu" unique_id=643001197 instance=ExtResource("3_yjgyn")]
-
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=827919547]
-material = SubResource("ShaderMaterial_vmd75")
+material = SubResource("ShaderMaterial_pwbes")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -135,6 +131,11 @@ mesh = ExtResource("2_oblsv")
 surface_material_override/0 = SubResource("StandardMaterial3D_oblsv")
 surface_material_override/1 = SubResource("ShaderMaterial_oblsv")
 script = SubResource("GDScript_wl6xk")
+
+[node name="Menu" type="SubViewport" parent="SubViewportContainer/SubViewport/Scene/CRT" unique_id=1435437003]
+size = Vector2i(720, 480)
+
+[node name="MainMenuGui" parent="SubViewportContainer/SubViewport/Scene/CRT/Menu" unique_id=643001197 instance=ExtResource("3_yjgyn")]
 
 [node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport/Scene" unique_id=874469245]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
